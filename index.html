@@ -1591,8 +1591,238 @@
   .bb-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text3); font-family: var(--mono); }
   .bb-legend-dot { width: 20px; height: 2px; border-radius: 2px; }
 
-  .watchlist-page { padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; color: var(--text3); font-family: var(--mono); font-size: 13px; text-align: center; gap: 12px; }
-  .watchlist-page svg { width: 40px; height: 40px; opacity: 0.3; }
+  /* ── NEWS PAGE (replaces watchlist-page) ── */
+  .news-page {
+    padding: 24px 24px 32px;
+    max-width: 860px;
+  }
+
+  .news-page-header {
+    margin-bottom: 20px;
+  }
+
+  .news-page-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin-bottom: 4px;
+  }
+
+  .news-page-sub {
+    font-size: 12.5px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  /* ── Filter tabs ── */
+  .news-filter-wrap {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .news-filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 34px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .news-filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .news-filter-btn.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ── News card list ── */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ── News card ── */
+  .news-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .news-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .news-card:hover {
+    border-color: rgba(255,0,94,0.2);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  .news-card:hover::before { opacity: 1; }
+
+  .news-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+
+  .news-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .news-tag.kospi  { background: rgba(59,130,246,0.10); color: #3B82F6; }
+  .news-tag.us     { background: rgba(16,185,129,0.10); color: var(--success); }
+  .news-tag.coin   { background: rgba(245,158,11,0.10); color: #D97706; }
+  .news-tag.global { background: rgba(139,92,246,0.10); color: #7C3AED; }
+  .news-tag.macro  { background: rgba(255,0,94,0.08);   color: var(--accent); }
+
+  .news-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .news-title {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .news-summary {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .news-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  .news-source-dot {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+
+  /* ── Skeleton cards ── */
+  .news-skeleton {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .skel-line {
+    background: linear-gradient(90deg, var(--border) 25%, var(--bg2) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .skel-line:last-child { margin-bottom: 0; }
+
+  /* ── Empty state ── */
+  .news-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    gap: 12px;
+    color: var(--text3);
+    text-align: center;
+  }
+
+  .news-empty svg { opacity: 0.25; width: 40px; height: 40px; }
+  .news-empty-title { font-size: 14px; font-weight: 500; color: var(--text2); }
+  .news-empty-sub { font-size: 12.5px; font-family: var(--mono); }
+
+  /* ── Refresh button ── */
+  .news-refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+  }
+
+  .news-refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .news-refresh-btn svg { width: 13px; height: 13px; }
+  .news-refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
+
+  @media (max-width: 768px) {
+    .news-page { padding: 16px 14px 24px; }
+    .news-title { font-size: 14px; }
+    .news-card  { padding: 14px 16px; }
+  }
 
 </style>
 </head>
@@ -1617,8 +1847,8 @@
         패턴 분석
       </div>
       <div class="nav-item" id="nav-watchlist" onclick="switchPage('watchlist')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2"/></svg>
-        관심종목
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M2 11h10"/><path d="M2 15h10"/><path d="M2 7h5"/><rect x="2" y="4" width="4" height="16" rx="1"/></svg>
+        시장 뉴스
       </div>
     </nav>
 
@@ -1873,13 +2103,49 @@
       </div><!-- /pa-layout -->
     </div><!-- /page-pattern -->
 
-    <!-- WATCHLIST PAGE -->
-    <div id="page-watchlist" class="page-view">
-      <div class="watchlist-page">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2"/></svg>
-        <div>관심종목 기능은 준비 중입니다</div>
+    <!-- NEWS START -->
+    <!-- MARKET NEWS PAGE (formerly watchlist) -->
+    <div id="page-watchlist" class="page-view" role="main" aria-label="시장 뉴스">
+      <div class="news-page">
+
+        <!-- Header -->
+        <div class="news-page-header">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div class="news-page-title">시장 뉴스 브리핑</div>
+              <div class="news-page-sub">오늘 시장을 한눈에 보는 요약 뉴스</div>
+            </div>
+            <button class="news-refresh-btn" id="news-refresh-btn"
+                    onclick="refreshNews()" aria-label="뉴스 새로고침">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+              새로고침
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="news-filter-wrap" role="tablist" aria-label="뉴스 카테고리 필터">
+          <button class="news-filter-btn active" role="tab" aria-selected="true"
+                  onclick="filterNews('전체', this)">전체</button>
+          <button class="news-filter-btn" role="tab" aria-selected="false"
+                  onclick="filterNews('국내 주식', this)">국내 주식</button>
+          <button class="news-filter-btn" role="tab" aria-selected="false"
+                  onclick="filterNews('미국 주식', this)">미국 주식</button>
+          <button class="news-filter-btn" role="tab" aria-selected="false"
+                  onclick="filterNews('코인', this)">코인</button>
+        </div>
+
+        <!-- News list (rendered by JS) -->
+        <div class="news-list" id="news-list" role="feed" aria-label="뉴스 목록">
+          <!-- skeleton shown on first load -->
+        </div>
+
       </div>
     </div>
+    <!-- NEWS END -->
 
   </div><!-- /main -->
 </div><!-- /layout -->
@@ -1913,11 +2179,13 @@
 
   <button class="tab-btn" id="tab-watchlist"
           onclick="switchPage('watchlist')"
-          aria-label="관심종목">
+          aria-label="시장 뉴스">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2"/>
+      <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/>
+      <path d="M2 11h10"/><path d="M2 15h10"/><path d="M2 7h5"/>
+      <rect x="2" y="4" width="4" height="16" rx="1"/>
     </svg>
-    관심종목
+    시장 뉴스
   </button>
 
   <button class="tab-btn" id="tab-darkmode"
@@ -2493,6 +2761,7 @@ function switchPage(page) {
     }
   });
   if (page === 'pattern') initPatternPage();
+  if (page === 'watchlist') initNewsPage();
   // Scroll to top on page switch (mobile UX)
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -2909,6 +3178,257 @@ function renderScanTable() {
 
 // Spin keyframe
 (function(){const s=document.createElement('style');s.textContent='@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';document.head.appendChild(s);})();
+
+// NEWS: ═══════════════════════════════════════════════════════════════
+// MARKET NEWS DATA & LOGIC
+// ═══════════════════════════════════════════════════════════════════════
+
+// NEWS: Fake data array — swap the body of fetchMarketNews() when real API is ready
+const NEWS_DATA = [
+  {
+    id: 'korea-1',
+    category: '국내 주식',
+    tag: '코스피',
+    tagCls: 'kospi',
+    title: '삼성전자, 1분기 실적 서프라이즈 … 반도체 업황 회복 신호',
+    summary: '반도체 업황 회복 기대감에 시장 컨센서스를 상회하는 실적을 발표했습니다. HBM 수요 급증이 주요 원인으로 분석됩니다.',
+    source: '연합뉴스',
+    timeAgo: '2시간 전'
+  },
+  {
+    id: 'korea-2',
+    category: '국내 주식',
+    tag: '코스닥',
+    tagCls: 'kospi',
+    title: 'K-배터리 3사, 유럽 공장 증설 발표로 일제 강세',
+    summary: 'LG에너지솔루션·삼성SDI·SK온이 유럽 전기차 수요 대응을 위해 합산 5조 원 규모 증설 계획을 공식화했습니다.',
+    source: '한국경제',
+    timeAgo: '4시간 전'
+  },
+  {
+    id: 'korea-3',
+    category: '국내 주식',
+    tag: '코스피',
+    tagCls: 'kospi',
+    title: '외국인 순매수 8거래일 연속 … 코스피 2,700선 재도전',
+    summary: '외국인 투자자가 반도체·자동차 섹터를 중심으로 꾸준히 매수세를 유지하며 지수 상승을 견인하고 있습니다.',
+    source: '머니투데이',
+    timeAgo: '5시간 전'
+  },
+  {
+    id: 'us-1',
+    category: '미국 주식',
+    tag: '나스닥',
+    tagCls: 'us',
+    title: 'NVIDIA, 차세대 블랙웰 GPU 양산 확대 … 목표가 줄상향',
+    summary: '주요 IB들이 블랙웰 아키텍처 양산 가속을 근거로 목표주가를 일제히 상향 조정했습니다. AI 데이터센터 투자 사이클이 장기화될 것이라는 전망이 우세합니다.',
+    source: 'Reuters',
+    timeAgo: '1시간 전'
+  },
+  {
+    id: 'us-2',
+    category: '미국 주식',
+    tag: 'S&P500',
+    tagCls: 'us',
+    title: '애플, 인도 생산 비중 확대 … 관세 리스크 헤지 전략',
+    summary: '팀 쿡 CEO가 인도 현지 생산 목표치를 기존 대비 두 배 확대하겠다고 밝혔습니다. 미-중 관세 불확실성에 대한 선제 대응으로 평가됩니다.',
+    source: 'Bloomberg',
+    timeAgo: '3시간 전'
+  },
+  {
+    id: 'us-3',
+    category: '미국 주식',
+    tag: '테크',
+    tagCls: 'us',
+    title: '테슬라, FSD 완전 자율주행 유료 구독 사용자 100만 돌파',
+    summary: '테슬라의 완전자율주행(FSD) 유료 구독 이용자가 100만 명을 넘었습니다. 소프트웨어 매출 비중이 확대되면서 수익성 개선 기대가 높아지고 있습니다.',
+    source: 'CNBC',
+    timeAgo: '6시간 전'
+  },
+  {
+    id: 'coin-1',
+    category: '코인',
+    tag: '비트코인',
+    tagCls: 'coin',
+    title: '비트코인, 9만 달러 돌파 … 반감기 후 랠리 재점화',
+    summary: '반감기 이후 공급 감소 효과와 현물 ETF 자금 유입이 맞물리며 BTC가 90,000달러를 돌파했습니다. 다음 저항선은 95,000달러로 분석됩니다.',
+    source: 'CoinDesk',
+    timeAgo: '30분 전'
+  },
+  {
+    id: 'coin-2',
+    category: '코인',
+    tag: '이더리움',
+    tagCls: 'coin',
+    title: '이더리움 ETF, 일일 순유입 3억 달러 돌파 … 기관 수요 본격화',
+    summary: '이더리움 현물 ETF에 대규모 기관 자금이 유입되며 시장 분위기가 빠르게 전환되고 있습니다. ETH/BTC 비율도 4개월 만에 최고치를 기록했습니다.',
+    source: 'The Block',
+    timeAgo: '1시간 전'
+  },
+  {
+    id: 'coin-3',
+    category: '코인',
+    tag: '알트코인',
+    tagCls: 'coin',
+    title: 'SOL·AVAX, 이번 주 30% 이상 급등 … 알트시즌 도래 신호?',
+    summary: '솔라나와 아발란체가 주요 DeFi 활동 급증과 맞물려 강한 상승세를 보였습니다. 비트코인 도미넌스 하락과 함께 알트코인 시즌 진입 가능성이 거론되고 있습니다.',
+    source: '코인텔레그래프',
+    timeAgo: '2시간 전'
+  },
+  {
+    id: 'macro-1',
+    category: '국내 주식',
+    tag: '거시경제',
+    tagCls: 'macro',
+    title: '한국은행, 기준금리 3.25% 동결 … 하반기 인하 신호',
+    summary: '금통위는 이번 달 금리를 동결했지만 이창용 총재가 하반기 금리 인하 가능성을 시사하는 발언을 했습니다. 시장에선 9월 인하를 유력하게 보고 있습니다.',
+    source: '한국경제TV',
+    timeAgo: '7시간 전'
+  },
+  {
+    id: 'us-macro-1',
+    category: '미국 주식',
+    tag: '연준',
+    tagCls: 'us',
+    title: '파월 연준 의장 "인플레 하락 자신감, 성급한 금리 인하는 신중"',
+    summary: '제롬 파월 의장이 인플레이션 둔화 흐름에 자신감을 표명하면서도 조기 금리 인하에 대한 과도한 기대를 경계했습니다. 9월 인하 확률은 65%로 반영됐습니다.',
+    source: 'WSJ',
+    timeAgo: '8시간 전'
+  }
+];
+
+// NEWS: Current active filter
+let newsFilter = '전체';
+let newsLoading = false;
+
+// NEWS: Tag class map (extend as needed)
+const NEWS_TAG_CLS = {
+  '코스피': 'kospi', '코스닥': 'kospi', '거시경제': 'macro',
+  '나스닥': 'us', 'S&P500': 'us', '테크': 'us', '연준': 'us',
+  '비트코인': 'coin', '이더리움': 'coin', '알트코인': 'coin',
+};
+
+// NEWS: API wrapper — replace body with real fetch() call when ready
+async function fetchMarketNews(filter) {
+  // TODO: Replace below with real API call, e.g.:
+  // const res = await fetch(`https://your-api.com/news?category=${encodeURIComponent(filter)}`);
+  // return await res.json();
+
+  // Simulate tiny network delay for realistic UX
+  await new Promise(r => setTimeout(r, 320));
+
+  if (filter === '전체') return NEWS_DATA;
+  return NEWS_DATA.filter(n => n.category === filter);
+}
+
+// NEWS: Render skeleton loading placeholders
+function renderNewsSkeletons() {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  list.innerHTML = [1,2,3].map(() => `
+    <div class="news-skeleton" aria-hidden="true">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div class="skel-line" style="width:72px;height:18px"></div>
+        <div class="skel-line" style="width:52px;height:14px"></div>
+      </div>
+      <div class="skel-line" style="width:90%;height:18px"></div>
+      <div class="skel-line" style="width:75%;height:18px;margin-bottom:14px"></div>
+      <div class="skel-line" style="width:55%;height:13px"></div>
+      <div class="skel-line" style="width:40%;height:13px"></div>
+    </div>`).join('');
+}
+
+// NEWS: Render empty state
+function renderNewsEmpty() {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  list.innerHTML = `
+    <div class="news-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/>
+        <path d="M2 11h10"/><path d="M2 15h10"/><path d="M2 7h5"/>
+        <rect x="2" y="4" width="4" height="16" rx="1"/>
+      </svg>
+      <div class="news-empty-title">불러온 뉴스가 없어요</div>
+      <div class="news-empty-sub">필터를 바꾸거나 새로고침해보세요</div>
+    </div>`;
+}
+
+// NEWS: Render a list of news items
+function renderNewsList(items) {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  if (!items || items.length === 0) { renderNewsEmpty(); return; }
+  list.innerHTML = items.map(item => {
+    const tagCls = item.tagCls || NEWS_TAG_CLS[item.tag] || '';
+    return `
+    <article class="news-card" tabindex="0"
+             role="article" aria-label="${item.title}"
+             onclick="openNewsDetail('${item.id}')"
+             onkeydown="if(event.key==='Enter')openNewsDetail('${item.id}')">
+      <div class="news-card-top">
+        <span class="news-tag ${tagCls}">${item.tag}</span>
+        <span class="news-time">${item.timeAgo}</span>
+      </div>
+      <div class="news-title">${item.title}</div>
+      <div class="news-summary">${item.summary}</div>
+      <div class="news-footer">
+        <span class="news-source">${item.source}</span>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+// NEWS: Filter click handler
+function filterNews(category, btn) {
+  newsFilter = category;
+  // Update active state
+  document.querySelectorAll('.news-filter-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+  }
+  loadNews();
+}
+
+// NEWS: Main loader — shows skeleton, fetches, renders
+async function loadNews() {
+  if (newsLoading) return;
+  newsLoading = true;
+  renderNewsSkeletons();
+  try {
+    const items = await fetchMarketNews(newsFilter);
+    renderNewsList(items);
+  } catch (err) {
+    console.error('News load error:', err);
+    renderNewsEmpty();
+  } finally {
+    newsLoading = false;
+  }
+}
+
+// NEWS: Refresh button handler
+function refreshNews() {
+  const btn = document.getElementById('news-refresh-btn');
+  if (btn) btn.classList.add('spinning');
+  loadNews().finally(() => {
+    if (btn) btn.classList.remove('spinning');
+  });
+}
+
+// NEWS: Placeholder for detail view (wire up real navigation later)
+function openNewsDetail(id) {
+  const item = NEWS_DATA.find(n => n.id === id);
+  if (item) showToast(item.title.slice(0, 40) + '…');
+}
+
+// NEWS: Called by switchPage('watchlist') — loads news on first visit
+function initNewsPage() {
+  loadNews();
+}
 
 // ──────────────────────────────────────────────
 // INIT
