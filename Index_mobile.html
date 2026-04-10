@@ -869,6 +869,35 @@
 
   /* ─── SPARKLINE ──────────────────────────────────────── */
   .sparkline { height: 32px; margin: 6px 0 10px; }
+  /* ─── FOCUS VISIBLE (accessibility) ───────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ─── OVERFLOW SAFETY ──────────────────────────────────── */
+  html, body { overflow-x: hidden; }
+
+  /* ─── HOLDING CARD — touch safety ─────────────────────── */
+  .btn-buy, .btn-sell {
+    min-height: 36px;
+  }
+
+  /* ─── CAROUSEL OUTER — prevent bleed ──────────────────── */
+  .carousel-outer { overflow: hidden; }
+
+  /* ─── HEADER search shrink on small ───────────────────── */
+  @media (max-width: 480px) {
+    #search-input { font-size: 13px; }
+    .avatar { width: 30px; height: 30px; font-size: 11px; }
+  }
 
   /* ─── RESPONSIVE ─────────────────────────────────────── */
   @media (max-width: 1100px) {
@@ -876,16 +905,229 @@
     .alloc-card { display: none; }
   }
 
+  /* ══════════════════════════════════════════════════════
+     BOTTOM TAB BAR  (mobile only, ≤768px)
+  ══════════════════════════════════════════════════════ */
+  .bottom-tab-bar {
+    display: none;
+  }
+
   @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .page { padding: 20px 16px 40px; }
-    header { padding: 12px 16px; }
-    .summary-strip { grid-template-columns: 1fr; gap: 14px; }
+    /* ── Hide desktop sidebar ── */
+    .sidebar { display: none !important; }
+
+    /* ── Show bottom tab bar ── */
+    .bottom-tab-bar {
+      display: flex;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 150;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      height: 60px;
+      align-items: stretch;
+      transition: background 0.3s, border-color 0.3s;
+      /* iOS safe area */
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border: none;
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      transition: color 0.2s;
+      padding: 0;
+      min-height: 44px;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .tab-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 0 0 3px 3px;
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+    }
+
+    .tab-btn.active::before {
+      transform: scaleX(1);
+    }
+
+    .tab-btn svg {
+      width: 22px; height: 22px;
+    }
+
+    /* ── Body gets bottom padding so content isn't hidden behind tab bar ── */
+    body {
+      padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 10px 14px;
+      gap: 10px;
+    }
+
+    .search-wrap { max-width: none; flex: 1; }
+
+    .btn-add {
+      padding: 9px 12px;
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+
+    /* ── Page padding ── */
+    .page { padding: 16px 14px 24px; }
+
+    .pattern-page { padding: 16px 14px 24px; }
+
+    /* ── Summary strip ── */
+    .summary-strip {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
     .summary-card { min-width: 0; }
-    .total-value { font-size: 28px; }
-    .content-grid { gap: 16px; }
-    table th:nth-child(3), table td:nth-child(3),
-    table th:nth-child(5), table td:nth-child(5) { display: none; }
+    .summary-strip > .summary-card:nth-child(2),
+    .summary-strip > .summary-card:nth-child(3) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    /* make the two summary cards sit side by side */
+    .summary-strip {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .total-block { grid-column: 1 / -1; }
+
+    .total-value { font-size: 30px; }
+
+    /* ── Carousel cards ── */
+    .holding-card { min-width: 180px; padding: 16px; }
+    .card-price   { font-size: 17px; }
+
+    /* ── Content grid ── */
+    .content-grid { gap: 14px; margin-top: 20px; }
+
+    /* ── Transaction table → card layout on mobile ── */
+    .table-card { overflow: hidden; }
+
+    /* Hide standard thead on mobile */
+    .tx-table thead { display: none; }
+
+    /* Each row becomes a card */
+    .tx-table tbody tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .tx-table tbody tr:last-child { border-bottom: none; }
+
+    /* Each td gets a data-label shown as micro-caption */
+    .tx-table td {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0;
+      border: none;
+      font-size: 13px;
+    }
+
+    .tx-table td::before {
+      content: attr(data-label);
+      font-size: 10px;
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* Symbol cell spans full width */
+    .tx-table td:first-child { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 8px; }
+    .tx-table td:first-child::before { display: none; }
+
+    /* ── Pattern analysis layout ── */
+    .pa-layout {
+      grid-template-columns: 1fr;
+      padding: 14px 14px 24px;
+      gap: 14px;
+    }
+
+    .pa-right { margin-top: 0; }
+
+    /* ── Chart wrap ── */
+    .chart-wrap { height: 180px; }
+
+    /* ── Period tabs smaller ── */
+    .period-tab  { padding: 4px 8px; font-size: 11px; }
+    .pa-period   { padding: 4px 8px; font-size: 11px; }
+
+    /* ── Modal ── */
+    .modal { padding: 22px 18px; }
+    .modal-overlay { padding: 16px; align-items: flex-end; }
+    .modal {
+      border-radius: 20px 20px 0 0;
+      max-width: 100%;
+      width: 100%;
+      margin-bottom: calc(-1px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* ── Toast ── */
+    #toast {
+      bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+      right: 16px;
+      left: 16px;
+      text-align: center;
+    }
+
+    /* ── Prevent horizontal overflow ── */
+    * { max-width: 100%; }
+    table { max-width: none; } /* reset for tables that need scroll */
+    .carousel-track { max-width: none; }
+    canvas { max-width: 100% !important; }
+
+    /* Signal scan table: horizontal scroll */
+    #pa-table-wrap .signal-table-card {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #pa-table-wrap .signal-table-card table {
+      min-width: 400px;
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 380px) {
+    .total-value { font-size: 26px; }
+    .summary-strip { grid-template-columns: 1fr; }
+    .total-block { grid-column: auto; }
+    header .btn-add { display: none; } /* hide on tiny screens — user can add via chip */
   }
 
   /* ─── PRICE FLASH ─────────────────────────────────────── */
@@ -1397,10 +1639,10 @@
     <header>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" placeholder="종목 검색 (예: AAPL, 삼성전자)" autocomplete="off">
+        <input type="text" id="search-input" placeholder="종목 검색 (예: AAPL, 삼성전자)" autocomplete="off" aria-label="종목 검색" role="searchbox">
         <div class="search-suggestions" id="search-suggestions"></div>
       </div>
-      <button class="btn-add" id="btn-add-stock">+ 종목 추가</button>
+      <button class="btn-add" id="btn-add-stock" aria-label="종목 추가">+ 종목 추가</button>
       <div class="header-right">
         <div class="avatar">AU</div>
       </div>
@@ -1487,15 +1729,15 @@
             <button class="filter-btn" onclick="filterTx('sell', this)">매도</button>
           </div>
         </div>
-        <table>
+        <table class="tx-table" role="table" aria-label="거래 내역">
           <thead>
             <tr>
-              <th onclick="sortTable(0)">종목 <span class="sort-icon">↕</span></th>
-              <th onclick="sortTable(1)">유형 <span class="sort-icon">↕</span></th>
-              <th onclick="sortTable(2)">수량 <span class="sort-icon">↕</span></th>
-              <th onclick="sortTable(3)">체결가 <span class="sort-icon">↕</span></th>
-              <th onclick="sortTable(4)">거래 금액 <span class="sort-icon">↕</span></th>
-              <th onclick="sortTable(5)">날짜 <span class="sort-icon">↕</span></th>
+              <th onclick="sortTable(0)" scope="col">종목 <span class="sort-icon" aria-hidden="true">↕</span></th>
+              <th onclick="sortTable(1)" scope="col">유형 <span class="sort-icon" aria-hidden="true">↕</span></th>
+              <th onclick="sortTable(2)" scope="col">수량 <span class="sort-icon" aria-hidden="true">↕</span></th>
+              <th onclick="sortTable(3)" scope="col">체결가 <span class="sort-icon" aria-hidden="true">↕</span></th>
+              <th onclick="sortTable(4)" scope="col">거래 금액 <span class="sort-icon" aria-hidden="true">↕</span></th>
+              <th onclick="sortTable(5)" scope="col">날짜 <span class="sort-icon" aria-hidden="true">↕</span></th>
             </tr>
           </thead>
           <tbody id="tx-body"></tbody>
@@ -1641,6 +1883,61 @@
 
   </div><!-- /main -->
 </div><!-- /layout -->
+
+
+<!-- ══ BOTTOM TAB BAR (mobile only) ══ -->
+<nav class="bottom-tab-bar" role="navigation" aria-label="주요 메뉴">
+
+  <button class="tab-btn active" id="tab-portfolio"
+          onclick="switchPage('portfolio')"
+          aria-label="포트폴리오" aria-current="page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    포트폴리오
+  </button>
+
+  <button class="tab-btn" id="tab-pattern"
+          onclick="switchPage('pattern')"
+          aria-label="패턴 분석">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <polyline points="2,18 8,12 13,17 22,6"/>
+      <circle cx="8" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+      <circle cx="13" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+    </svg>
+    패턴 분석
+  </button>
+
+  <button class="tab-btn" id="tab-watchlist"
+          onclick="switchPage('watchlist')"
+          aria-label="관심종목">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2"/>
+    </svg>
+    관심종목
+  </button>
+
+  <button class="tab-btn" id="tab-darkmode"
+          onclick="toggleDarkMode()"
+          aria-label="다크 모드 전환">
+    <svg id="tab-dark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    테마
+  </button>
+
+</nav>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay">
@@ -1990,12 +2287,15 @@ function renderTable() {
 
   document.getElementById('tx-body').innerHTML = rows.map(r => `
     <tr>
-      <td><span class="tx-symbol">${r.symbol}</span><br><span style="font-size:11px;color:var(--text3)">${r.name}</span></td>
-      <td><span class="tx-type ${r.type}">${r.type === 'buy' ? '매수' : '매도'}</span></td>
-      <td class="tx-price">${r.qty}</td>
-      <td class="tx-price">${fmt(r.price)}</td>
-      <td class="tx-total">${fmt(r.qty * r.price)}</td>
-      <td class="tx-date">${r.date}</td>
+      <td>
+        <span class="tx-symbol">${r.symbol}</span>
+        <span style="font-size:11px;color:var(--text3);margin-left:4px">${r.name}</span>
+      </td>
+      <td data-label="유형"><span class="tx-type ${r.type}">${r.type === 'buy' ? '매수' : '매도'}</span></td>
+      <td data-label="수량" class="tx-price">${r.qty}</td>
+      <td data-label="체결가" class="tx-price">${fmt(r.price)}</td>
+      <td data-label="거래금액" class="tx-total">${fmt(r.qty * r.price)}</td>
+      <td data-label="날짜" class="tx-date">${r.date}</td>
     </tr>`).join('');
 }
 
@@ -2142,13 +2442,28 @@ function addStock(symbol, name, icon, price, change) {
 // ──────────────────────────────────────────────
 // DARK MODE
 // ──────────────────────────────────────────────
-document.getElementById('dark-toggle-btn').onclick = () => {
-  document.body.classList.toggle('dark');
+// Unified dark mode function (called from sidebar toggle + mobile tab)
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark');
   const track = document.getElementById('toggle-track');
-  track.classList.toggle('on');
-  initPortfolioChart(3);
+  if (track) track.classList.toggle('on', isDark);
+  // Update mobile tab icon
+  const iconEl = document.getElementById('tab-dark-icon');
+  if (iconEl) {
+    if (isDark) {
+      iconEl.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    } else {
+      iconEl.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+  }
+  // Re-render charts with correct theme
+  if (portfolioChart) initPortfolioChart(3);
   updateAllocChart();
-};
+  // Re-render PA charts if active
+  if (paCurrent) renderPACharts(paCurrent.candles, paCurrent.result);
+}
+
+document.getElementById('dark-toggle-btn').onclick = toggleDarkMode;
 
 // ──────────────────────────────────────────────
 // TOAST
@@ -2166,11 +2481,20 @@ function showToast(msg) {
 // ══════════════════════════════════════════════
 function switchPage(page) {
   ['portfolio','pattern','watchlist'].forEach(p => {
+    // Desktop sidebar nav
     document.getElementById('page-' + p).classList.toggle('active', p === page);
     const nav = document.getElementById('nav-' + p);
     if (nav) nav.classList.toggle('active', p === page);
+    // Mobile bottom tab bar
+    const tab = document.getElementById('tab-' + p);
+    if (tab) {
+      tab.classList.toggle('active', p === page);
+      tab.setAttribute('aria-current', p === page ? 'page' : 'false');
+    }
   });
   if (page === 'pattern') initPatternPage();
+  // Scroll to top on page switch (mobile UX)
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ══════════════════════════════════════════════
